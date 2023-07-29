@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- Hide email addresses from exported threads. [Stavros Korokithakis]
 - Add the subject to the chat context. [Stavros Korokithakis]
 - Make configuration more robust. [Stavros Korokithakis]
 

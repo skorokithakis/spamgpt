@@ -88,7 +88,7 @@ def main(dry_run: bool, export_json: str | None) -> None:
             for thread in threads:
                 for message in thread.messages:
                     message.sender = (
-                        "Me" if message.is_from(MY_ADDRESSES) else "Spammer"
+                        "ChatGPT" if message.is_from(MY_ADDRESSES) else "Spammer"
                     )
                 f.write(thread.model_dump_json() + "\n")
         logging.info("Done.")
