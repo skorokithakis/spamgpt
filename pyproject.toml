@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "spamgpt"
+version = "0.1.0"
+description = "Spam spammers back"
+authors = ["Stavros Korokithakis <hi@stavros.io>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+openai = "^0.27.8"
+pydantic = "^2.1.1"
+shortuuid = "^1.0.11"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+ignore = ["F403", "E501", "N802", "N803", "N806", "C901", "D100", "D102", "D102", "D10"]

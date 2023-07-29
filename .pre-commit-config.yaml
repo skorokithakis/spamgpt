@@ -1,0 +1,39 @@
+repos:
+- repo: https://github.com/ambv/black
+  rev: 23.7.0
+  hooks:
+  - id: black
+    name: Reformat files
+- repo: https://github.com/asottile/reorder_python_imports
+  rev: v3.10.0
+  hooks:
+  - id: reorder-python-imports
+    name: Reorder imports
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  rev: 'v0.0.278'
+  hooks:
+    - id: ruff
+      args: ["--fix"]
+- repo: https://github.com/pre-commit/mirrors-mypy
+  rev: v1.4.1
+  hooks:
+  - id: mypy
+    name: Run type checks
+    args: ["--ignore-missing-imports"]
+    additional_dependencies: ["types-requests"]
+- repo: local
+  hooks:
+  - id: gitchangelog
+    language: system
+    always_run: true
+    pass_filenames: false
+    name: Generate changelog
+    entry: bash -c "gitchangelog > CHANGELOG.md"
+    stages: [commit]
+- repo: local
+  hooks:
+  - id: forbid_prints
+    name: Check for leftover print statements.
+    types: [python]
+    entry: "print\\s*\\("
+    language: pygrep

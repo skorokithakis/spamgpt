@@ -1,0 +1,18 @@
+---
+services:
+  main:
+    build: .
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Athens
+      - SMTP_URL
+      - IMAP_URL
+      - MESSAGE_ID_HOST
+      - OPENAI_API_KEY
+      - MY_ADDRESSES
+      - MESSAGE_ID_HOST
+    volumes:
+      - .:/code
+      - ${HM_DATA_DIR}:/data
