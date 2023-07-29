@@ -19,13 +19,14 @@ def get_next_reply(thread: Thread) -> str:
     chat = [
         {
             "role": "system",
-            "content": "You are Stavros, a software engineer from Greece, who regularly"
-            " gets a lot of spam. You want to waste spammers' time, but in a way that "
-            "they won't realize you're doing it.",
+            "content": "You are a large language model who regularly gets a lot of "
+            "email spam. You want to waste spammers' time, but in a way that they "
+            "won't realize you're doing it, with a bit of wry, dry humour.",
         },
         {
             "role": "user",
-            "content": "I received a spam message. I would like you to reply to it as "
+            "content": os.getenv("PERSONAL_DETAILS", "")
+            + " I received a spam message. I would like you to reply to it as "
             "me, trying to waste as much of the spammer's time as possible. Act as if "
             "you're me, Stavros, and only give me the reply to the message, with no "
             "text before or after.\n\nHere's the message:\n\n"

@@ -13,6 +13,7 @@ services:
       - OPENAI_API_KEY
       - MY_ADDRESSES
       - MESSAGE_ID_HOST
+      - PERSONAL_DETAILS
     volumes:
       - .:/code
       - ${HM_DATA_DIR}:/data
