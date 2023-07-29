@@ -57,7 +57,7 @@ def get_next_reply(thread: Thread) -> str:
     return reply
 
 
-def main(dry_run: bool) -> None:
+def main(dry_run: bool, export_json: str | None) -> None:
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
@@ -66,6 +66,8 @@ def main(dry_run: bool) -> None:
 
     imap_url = urlparse(os.getenv("IMAP_URL", ""))
     smtp_url = urlparse(os.getenv("SMTP_URL", ""))
+
+    logging.info("Connecting to mail server...")
     mail = MailHelper(
         imap_username=imap_url.username,  # type: ignore
         imap_password=imap_url.password,  # type: ignore
@@ -78,7 +80,16 @@ def main(dry_run: bool) -> None:
         smtp_port=smtp_url.port,  # type: ignore
     )
 
-    for thread in mail.get_email_threads():
+    logging.info("Fetching email threads...")
+    threads = mail.get_email_threads()
+    if export_json:
+        logging.info(f"Exporting threads to {export_json}...")
+        with open(export_json, "w") as f:
+            f.write("\n".join(thread.model_dump_json() for thread in threads))
+        logging.info("Done.")
+        return
+
+    for thread in threads:
         if thread.messages[-1].is_from(MY_ADDRESSES):
             logging.info(
                 f'We\'ve already replied to "{thread.messages[0].subject}", skipping...'
@@ -113,6 +124,11 @@ if __name__ == "__main__":
         action="store_true",
         help="Run in dry-run mode (don't send emails)",
     )
+    parser.add_argument(
+        "--export-json",
+        metavar="FILE",
+        help="Export the threads to a file",
+    )
     args = parser.parse_args()
     for setting in (
         "SMTP_URL",
@@ -126,4 +142,4 @@ if __name__ == "__main__":
                 "ERROR: Necessary configuration environment variable missing:\n\n"
                 f"\t{setting}.\n\nPlease see the README for configuring SpamGPT."
             )
-    main(dry_run=args.dry_run)
+    main(dry_run=args.dry_run, export_json=args.export_json)

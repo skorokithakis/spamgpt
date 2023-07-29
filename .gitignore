@@ -147,3 +147,4 @@ dmypy.json
 .vscode/
 *.sqlite3
 .envrc
+*.json

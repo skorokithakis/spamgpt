@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- Add the subject to the chat context. [Stavros Korokithakis]
 - Make configuration more robust. [Stavros Korokithakis]
 
 Other
