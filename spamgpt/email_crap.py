@@ -11,6 +11,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import parsedate_to_datetime
 
+import bleach
 import shortuuid
 
 from .types import EmailAddress
@@ -53,6 +54,8 @@ def parse_email(raw_email: bytes) -> EmailMessage:
     body = get_body_from_email(email_message)
     if not body:
         raise ValueError("No body found in message.")
+
+    body = re.sub(r"\n\n+", r"\n\n", bleach.clean(body, tags=[], strip=True))
     body = (
         re.search(
             r"\A(?P<message>.*?)(^On .*?, .*? wrote:.*$|)\Z",
