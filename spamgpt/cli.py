@@ -85,7 +85,12 @@ def main(dry_run: bool, export_json: str | None) -> None:
     if export_json:
         logging.info(f"Exporting threads to {export_json}...")
         with open(export_json, "w") as f:
-            f.write("\n".join(thread.model_dump_json() for thread in threads))
+            for thread in threads:
+                for message in thread.messages:
+                    message.sender = (
+                        "Me" if message.is_from(MY_ADDRESSES) else "Spammer"
+                    )
+                f.write(thread.model_dump_json() + "\n")
         logging.info("Done.")
         return
 
@@ -104,14 +109,14 @@ def main(dry_run: bool, export_json: str | None) -> None:
             f"Replying from {thread.recipient} to {thread.sender} with:\n\n{reply}"
         )
         if not dry_run:
-            message = mail.send_mail(
+            sent = mail.send_mail(
                 sender=thread.recipient,
                 recipient=thread.sender,
                 subject=thread.subject,
                 body=reply,
                 in_reply_to=thread.messages[-1].id,
             )
-            mail.add_to_folder(message)
+            mail.add_to_folder(sent)
 
 
 if __name__ == "__main__":
