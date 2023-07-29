@@ -30,8 +30,8 @@ def get_next_reply(thread: Thread) -> str:
             + " I received a spam message. I would like you to reply to it as "
             "me, trying to waste as much of the spammer's time as possible. Act as if "
             "you're me, Stavros, and only give me the reply to the message, with no "
-            "text before or after.\n\nHere's the message:\n\n"
-            + thread.messages[0].body,
+            f"text before or after.\n\nHere's the message:\n\nSubject: {thread.subject}"
+            f"\n\nBody:\n\n{thread.messages[0].body}",
         },
     ]
     for message in thread.messages[1:]:
