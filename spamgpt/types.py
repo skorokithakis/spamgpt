@@ -17,7 +17,17 @@ class EmailMessage(BaseModel):
     body: str
 
     def is_from(self, addresses: set[str]) -> bool:
-        return parseaddr(self.sender)[1] in addresses
+        """
+        Check if the sender's address ends with any of my addresses.
+
+        We check for the ending because this allows us to match entire domains
+        as well (e.g. `@stavros.io`).
+        """
+        sender_email = parseaddr(self.sender)[1]
+        for address in addresses:
+            if sender_email.lower().endswith(address.lower()):
+                return True
+        return False
 
     def __lt__(self, other: "EmailMessage") -> bool:
         return self.date < other.date

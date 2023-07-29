@@ -148,8 +148,9 @@ class MailHelper:
         # Sort messages chronologically here, so we don't miss IDs due to trying to
         # get the reply before the message that's being replied to.
         for message in sorted(messages):
-            if not message.in_reply_to:
-                # This is the first message in the thread.
+            if not message.in_reply_to or not threads.get(message.in_reply_to):
+                # This is the first message in the thread (or we can't find the
+                # previous message).
                 threads[message.id] = Thread(id=message.id, messages=[message])
             else:
                 threads[message.in_reply_to].add_message(message)

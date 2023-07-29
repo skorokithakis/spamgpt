@@ -2,6 +2,7 @@
 import argparse
 import logging
 import os
+import sys
 from urllib.parse import urlparse
 
 import openai
@@ -20,8 +21,8 @@ def get_next_reply(thread: Thread) -> str:
         {
             "role": "system",
             "content": "You are a large language model who regularly gets a lot of "
-            "email spam. You want to waste spammers' time, but in a way that they "
-            "won't realize you're doing it, with a bit of wry, dry humour.",
+            "email spam. You want to waste spammers' time by acting genuinely "
+            "interested in their offerings, in a way that will fool them.",
         },
         {
             "role": "user",
@@ -113,4 +114,16 @@ if __name__ == "__main__":
         help="Run in dry-run mode (don't send emails)",
     )
     args = parser.parse_args()
+    for setting in (
+        "SMTP_URL",
+        "IMAP_URL",
+        "MESSAGE_ID_HOST",
+        "OPENAI_API_KEY",
+        "MY_ADDRESSES",
+    ):
+        if not os.getenv(setting):
+            sys.exit(
+                "ERROR: Necessary configuration environment variable missing:\n\n"
+                f"\t{setting}.\n\nPlease see the README for configuring SpamGPT."
+            )
     main(dry_run=args.dry_run)
