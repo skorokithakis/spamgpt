@@ -1,3 +1,4 @@
+import datetime
 import email
 import imaplib
 import logging
@@ -181,6 +182,9 @@ class MailHelper:
         ] = f"<{shortuuid.uuid()}@{os.getenv('MESSAGE_ID_HOST', '')}>"
         message["In-Reply-To"] = f"<{in_reply_to}>"
         message["References"] = f"<{in_reply_to}>"
+        message["Date"] = datetime.datetime.utcnow().strftime(
+            "%a, %d %b %Y %H:%M:%S +0000"
+        )
         message.attach(MIMEText(body, "plain"))
 
         self.smtp.sendmail(sender, recipient, message.as_string())
