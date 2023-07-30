@@ -6,7 +6,7 @@ authors = ["Stavros Korokithakis <hi@stavros.io>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.10,<4"
 openai = "^0.27.8"
 pydantic = "^2.1.1"
 shortuuid = "^1.0.11"
