@@ -19,6 +19,7 @@ Fix
 
 Other
 ~~~~~
+- Feat: Add the `MY_NAME` variable. [Stavros Korokithakis]
 - Feat: Add Docker image with crond. [Stavros Korokithakis]
 - Ci: Forbid pudb in pre-commit. [Stavros Korokithakis]
 - Chore: Change Python version. [Stavros Korokithakis]
