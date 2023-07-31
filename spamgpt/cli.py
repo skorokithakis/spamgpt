@@ -27,8 +27,9 @@ def get_next_reply(thread: Thread) -> str:
         {
             "role": "user",
             "content": os.getenv("PERSONAL_DETAILS", "")
-            + " I received a spam message. I would like you to reply to it as "
-            "me, trying to waste as much of the spammer's time as possible. If they "
+            + " I received a spam message. I would like you to reply to it as me"
+            + os.getenv("MY_NAME", "")
+            + ", trying to waste as much of the spammer's time as possible. If they "
             "ask you to do anything other than email, e.g. book an appointment or "
             "send them a file, say that you've done it and insist that there's some "
             "problem on their end, and ask them to check again. Always act as if "

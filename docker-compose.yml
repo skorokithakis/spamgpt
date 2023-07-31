@@ -11,6 +11,7 @@ services:
       - IMAP_URL
       - MESSAGE_ID_HOST
       - OPENAI_API_KEY
+      - MY_NAME
       - MY_ADDRESSES
       - MESSAGE_ID_HOST
       - PERSONAL_DETAILS

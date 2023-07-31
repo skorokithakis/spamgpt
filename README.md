@@ -23,6 +23,7 @@ You need to give it some configuration environment variables, if it's ever going
 | **`SMTP_URL`** | The URL of your SMTP server. Usually, `smtp://email@host.com:password@smtp.youremail.com`. |
 | **`IMAP_URL`** | The URL of your IMAP server. Usually, `imap://email@host.com:password@imap.youremail.com`. |
 | **`OPENAI_API_KEY`** | Your OpenAI API key, for talking to GPT. |
+| **`MY_NAME`** | Your name, for GPT to know, e.g. `Stavros`. |
 | **`MY_ADDRESSES`** | A comma-separated list of your email addresses, so SpamGPT knows where you are the recipient. E.g. `foo@bar.com,baz@bar.com`. Note that, if you have catch-all domains, this can also be just the domain, e.g. `@foo.bar,john@example.com,@baz.com`. |
 | **`MESSAGE_ID_HOST`** | Your email provider's host for the `Message-ID` email header that they send (I know, good luck). You can find this by opening an email *that you sent*, clicking "view raw message" (or similar), and looking for `Message-ID`. It will be something like `someletters@mail.host.com`. You need the `mail.host.com` part for this. If you get this wrong, I've noticed that some providers (Gmail, for example) will consider the message ID invalid if it doesn't come from your particular host, and generate its own message ID. This breaks SpamGPT's threading, and it gets confused and doesn't know when to reply and to whom. |
 | **`PERSONAL_DETAILS`** | Some details about you, to help ChatGPT imitate you. For example, `I am Stavros, a software developer from Greece.` |
