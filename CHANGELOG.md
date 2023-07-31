@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- Remove duplicate variables from Compose file. [Stavros Korokithakis]
 - Add more variable checking. [Stavros Korokithakis]
 - More robust reference handling. [Stavros Korokithakis]
 - Clean up emails a bit better. [Stavros Korokithakis]

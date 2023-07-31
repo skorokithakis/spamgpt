@@ -1,4 +1,4 @@
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-0 * * * * sleep $((RANDOM*3600/32768)) && spamgpt
+0 * * * * bash -c 'export SLEEP_TIME=$((RANDOM*3600/32768)); echo "Sleeping for $SLEEP_TIME seconds..."; sleep $SLEEP_TIME && spamgpt'
