@@ -7,6 +7,8 @@ Changelog
 
 Fix
 ~~~
+- Parse the bodies of emails better, because email is a fucking mess.
+  [Stavros Korokithakis]
 - Clean up HTML messages before replying. [Stavros Korokithakis]
 - Change "Me" to "ChatGPT" [Stavros Korokithakis]
 - Hide email addresses from exported threads. [Stavros Korokithakis]

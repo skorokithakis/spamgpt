@@ -39,12 +39,22 @@ def get_body_from_email(msg: Message) -> str | None:
         if msg.get_content_type() == "text/plain":
             return parse_payload(msg)
         elif msg.get_content_type() == "text/html":
-            # Clean HTML
-            return re.sub(
-                r"\n\n+", r"\n\n", bleach.clean(parse_payload(msg), tags=[], strip=True)
-            )
+            # Remove HTML.
+            return bleach.clean(parse_payload(msg), tags=[], strip=True)
         else:
             return None
+
+
+def clean_body(body: str) -> str:
+    """Remove any quoted messages from the body."""
+    body = body.replace("\r\n", "\n").replace("\r", "\n")
+    body = re.sub(r"\n\n+", r"\n\n", body)
+    body = re.split(
+        "^On .*?, .*?, at .*?, .*? wrote:$|^\-+Original Message\-+$",
+        body,
+        flags=re.MULTILINE,
+    )[0].strip()
+    return body
 
 
 def parse_email(raw_email: bytes) -> EmailMessage:
@@ -64,16 +74,7 @@ def parse_email(raw_email: bytes) -> EmailMessage:
     if not body:
         raise ValueError("No body found in message.")
 
-    # Strip quoted emails.
-    body = (
-        re.search(
-            r"\A(?P<message>.*?)(^On .*?, .*? wrote:.*$|)\Z",
-            body,
-            re.DOTALL | re.MULTILINE,
-        )
-        .group("message")  # type: ignore
-        .strip()
-    )
+    body = clean_body(body)
 
     return EmailMessage(
         id=message_id,
