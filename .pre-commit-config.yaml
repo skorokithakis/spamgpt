@@ -13,7 +13,6 @@ repos:
   rev: 'v0.0.278'
   hooks:
     - id: ruff
-      args: ["--fix"]
 - repo: https://github.com/pre-commit/mirrors-mypy
   rev: v1.4.1
   hooks:
@@ -32,8 +31,8 @@ repos:
     stages: [commit]
 - repo: local
   hooks:
-  - id: forbid_prints
-    name: Check for leftover print statements.
+  - id: forbid_cruft
+    name: Check for leftover debugging statements.
     types: [python]
-    entry: "print\\s*\\("
+    entry: "print\\s*\\(|import pudb"
     language: pygrep

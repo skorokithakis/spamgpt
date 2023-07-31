@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- Clean up emails a bit better. [Stavros Korokithakis]
 - Parse the bodies of emails better, because email is a fucking mess.
   [Stavros Korokithakis]
 - Clean up HTML messages before replying. [Stavros Korokithakis]
