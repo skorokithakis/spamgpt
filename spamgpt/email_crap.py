@@ -31,11 +31,20 @@ def parse_payload(msg):
 def get_body_from_email(msg: Message) -> str | None:
     if msg.is_multipart():
         for part in msg.get_payload():
-            if part.get_content_type() == "text/plain":
-                return parse_payload(part)
+            body = get_body_from_email(part)
+            if body:
+                return body
         return None
     else:
-        return parse_payload(msg)
+        if msg.get_content_type() == "text/plain":
+            return parse_payload(msg)
+        elif msg.get_content_type() == "text/html":
+            # Clean HTML
+            return re.sub(
+                r"\n\n+", r"\n\n", bleach.clean(parse_payload(msg), tags=[], strip=True)
+            )
+        else:
+            return None
 
 
 def parse_email(raw_email: bytes) -> EmailMessage:
@@ -55,7 +64,7 @@ def parse_email(raw_email: bytes) -> EmailMessage:
     if not body:
         raise ValueError("No body found in message.")
 
-    body = re.sub(r"\n\n+", r"\n\n", bleach.clean(body, tags=[], strip=True))
+    # Strip quoted emails.
     body = (
         re.search(
             r"\A(?P<message>.*?)(^On .*?, .*? wrote:.*$|)\Z",
