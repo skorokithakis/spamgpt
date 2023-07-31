@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.11-alpine
 
 ENV PYTHONUNBUFFERED=1
 
@@ -9,8 +9,14 @@ RUN mkdir /code
 COPY pyproject.toml poetry.lock /code/
 WORKDIR /code
 
+# Install dependencies.
 RUN poetry install --no-interaction --no-root
+
+COPY misc/crontab /var/spool/cron/crontabs/root
 
 COPY ./ /code/
 
-CMD python -m spamgpt.cli
+# Install the project.
+RUN poetry install
+
+CMD crond -f -l 1

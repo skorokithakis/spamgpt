@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- More robust reference handling. [Stavros Korokithakis]
 - Clean up emails a bit better. [Stavros Korokithakis]
 - Parse the bodies of emails better, because email is a fucking mess.
   [Stavros Korokithakis]

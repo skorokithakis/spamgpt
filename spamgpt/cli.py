@@ -28,9 +28,12 @@ def get_next_reply(thread: Thread) -> str:
             "role": "user",
             "content": os.getenv("PERSONAL_DETAILS", "")
             + " I received a spam message. I would like you to reply to it as "
-            "me, trying to waste as much of the spammer's time as possible. Act as if "
-            "you're me, Stavros, and only give me the reply to the message, with no "
-            "text before or after.\n\nHere's the message:"
+            "me, trying to waste as much of the spammer's time as possible. If they "
+            "ask you to do anything other than email, e.g. book an appointment or "
+            "send them a file, say that you've done it and insist that there's some "
+            "problem on their end, and ask them to check again. Always act as if "
+            "you're me, and only give me the reply to their message, with no text "
+            "before or after.\n\nHere's the message:"
             f"\n\nFrom: {thread.sender}"
             f"\n\nSubject: {thread.subject}"
             f"\n\nBody:\n\n{thread.messages[0].body}",
@@ -121,7 +124,7 @@ def main(dry_run: bool, export_json: str | None) -> None:
             mail.add_to_folder(sent)
 
 
-if __name__ == "__main__":
+def cli():
     parser = argparse.ArgumentParser(
         description="SpamGPT: AI-powered email spam replies"
     )
@@ -150,3 +153,7 @@ if __name__ == "__main__":
                 f"\t{setting}.\n\nPlease see the README for configuring SpamGPT."
             )
     main(dry_run=args.dry_run, export_json=args.export_json)
+
+
+if __name__ == "__main__":
+    cli()
