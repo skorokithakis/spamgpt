@@ -18,6 +18,7 @@ Fix
 
 Other
 ~~~~~
+- Ci: Forbid pudb in pre-commit. [Stavros Korokithakis]
 - Chore: Change Python version. [Stavros Korokithakis]
 - Feat: Add JSON exporting. [Stavros Korokithakis]
 - Feat: Add date to the email message. [Stavros Korokithakis]

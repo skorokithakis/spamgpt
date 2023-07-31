@@ -10,6 +10,7 @@ EmailAddress = str
 class EmailMessage(BaseModel):
     id: str
     in_reply_to: str | None
+    references: list[str] | None
     date: datetime.datetime
     sender: EmailAddress
     recipient: EmailAddress

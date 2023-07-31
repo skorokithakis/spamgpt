@@ -1,7 +1,6 @@
 import datetime
 import email
 import imaplib
-import logging
 import os
 import re
 import smtplib
@@ -66,6 +65,15 @@ def parse_email(raw_email: bytes) -> EmailMessage:
     message_id = email_message["Message-ID"].strip("\r\n <>")
     in_reply_to = email_message["In-Reply-To"]
     in_reply_to = in_reply_to.strip("\r\n <>") if in_reply_to else None
+    references = [
+        item
+        for item in (
+            [item.strip("<>") for item in re.split(r"\s+", email_message["References"])]
+            if email_message["References"]
+            else []
+        )
+        if item
+    ]
     subject = email_message["Subject"]
     date = parsedate_to_datetime(email_message["Date"])
 
@@ -79,6 +87,7 @@ def parse_email(raw_email: bytes) -> EmailMessage:
     return EmailMessage(
         id=message_id,
         in_reply_to=in_reply_to,
+        references=references,
         date=date,
         subject=subject,
         sender=sender,
@@ -143,34 +152,38 @@ class MailHelper:
         threads: dict[str, Thread] = {}
         messages = [self.get_message(num) for num in data[0].split()]
 
-        # Here, we need to make sure we've fetched all messages, no matter where
-        # they are. To do this, we need to construct the set of all the messages
-        # `in-reply-to` IDs we've seen, then subtract the set of `message-id`s we've
-        # seen. Then, we need to fetch the difference.
-        missing_message_ids = {
-            message.in_reply_to
-            for message in messages
-            if message.in_reply_to is not None
-        } - {message.id for message in messages}
-
-        if missing_message_ids:
-            logging.warn(
-                f"Couldn't find some messages in the {self._mailbox} folder: {missing_message_ids}"
-            )
-
-        # Sort messages chronologically here, so we don't miss IDs due to trying to
-        # get the reply before the message that's being replied to.
+        # Here, we construct a dictionary of message IDs and their corresponding
+        # threads. We do this to be able to easily look up which message a
+        # message is a reply to, since we can just look up the `in-reply-to` in
+        # this dictionary.
+        # We sort messages chronologically first, so we don't miss IDs due to
+        # trying to get the reply before the message that's being replied to.
         for message in sorted(messages):
-            if not message.in_reply_to or not threads.get(message.in_reply_to):
+            thread = None
+            # We want to find the thread this message is in. To do this, we try
+            # to find any message referenced in this message's `in-reply-to` or
+            # `references` headers.
+            # Construct the list of message IDs to search for.
+            search_for = []
+            if message.in_reply_to:
+                search_for.append(message.in_reply_to)
+            if message.references:
+                search_for.extend(message.references)
+            for message_id in search_for:
+                if message_id and message_id in threads:
+                    # We found the thread we're looking for.
+                    thread = threads[message_id]
+                    break
+            if thread is None:
                 # This is the first message in the thread (or we can't find the
                 # previous message).
                 threads[message.id] = Thread(id=message.id, messages=[message])
             else:
-                threads[message.in_reply_to].add_message(message)
+                thread.add_message(message)
                 # Add a reference to this message's ID to the dictionary containing
                 # the threads, so the next message knows where to find it (using its
                 # in-reply-to).
-                threads[message.id] = threads[message.in_reply_to]
+                threads[message.id] = thread
 
         # Deduplicate threads before returning.
         return set(threads.values())
