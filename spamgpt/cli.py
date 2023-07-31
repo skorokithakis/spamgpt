@@ -146,7 +146,9 @@ def cli():
         "IMAP_URL",
         "MESSAGE_ID_HOST",
         "OPENAI_API_KEY",
+        "MY_NAME",
         "MY_ADDRESSES",
+        "PERSONAL_DETAILS",
     ):
         if not os.getenv(setting):
             sys.exit(
