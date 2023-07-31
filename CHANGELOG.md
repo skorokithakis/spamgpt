@@ -20,6 +20,7 @@ Fix
 
 Other
 ~~~~~
+- Doc: Add deployment instructions. [Stavros Korokithakis]
 - Chore: Remove the data dir from Compose. [Stavros Korokithakis]
 - Feat: Add the `MY_NAME` variable. [Stavros Korokithakis]
 - Feat: Add Docker image with crond. [Stavros Korokithakis]
