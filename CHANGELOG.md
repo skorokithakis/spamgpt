@@ -21,6 +21,8 @@ Fix
 
 Other
 ~~~~~
+- Feat: Echo sleep interval in the Docker container. [Stavros
+  Korokithakis]
 - Doc: Add deployment instructions. [Stavros Korokithakis]
 - Chore: Remove the data dir from Compose. [Stavros Korokithakis]
 - Feat: Add the `MY_NAME` variable. [Stavros Korokithakis]
