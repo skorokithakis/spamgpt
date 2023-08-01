@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- Change Docker shell. [Stavros Korokithakis]
 - Remove duplicate variables from Compose file. [Stavros Korokithakis]
 - Add more variable checking. [Stavros Korokithakis]
 - More robust reference handling. [Stavros Korokithakis]

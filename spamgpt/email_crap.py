@@ -49,7 +49,7 @@ def clean_body(body: str) -> str:
     body = body.replace("\r\n", "\n").replace("\r", "\n")
     body = re.sub(r"\n\n+", r"\n\n", body)
     body = re.split(
-        "^On .*?, .*?, at .*?, .*? wrote:$|^\-+Original Message\-+$",
+        "^On .*?, .*?, at .*?, .*? wrote:$|^\-+Original Message\-+$|^\-{10,}+$",
         body,
         flags=re.MULTILINE,
     )[0].strip()
