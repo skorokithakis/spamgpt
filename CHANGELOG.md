@@ -22,6 +22,7 @@ Fix
 
 Other
 ~~~~~
+- Feat: Add another quoting method. [Stavros Korokithakis]
 - Feat: Echo sleep interval in the Docker container. [Stavros
   Korokithakis]
 - Doc: Add deployment instructions. [Stavros Korokithakis]

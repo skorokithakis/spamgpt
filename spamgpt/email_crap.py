@@ -44,12 +44,15 @@ def get_body_from_email(msg: Message) -> str | None:
             return None
 
 
-def clean_body(body: str) -> str:
+def clean_body(original_body: str) -> str:
     """Remove any quoted messages from the body."""
-    body = body.replace("\r\n", "\n").replace("\r", "\n")
+    body = original_body.replace("\r\n", "\n").replace("\r", "\n")
     body = re.sub(r"\n\n+", r"\n\n", body)
     body = re.split(
-        "^On .*?, .*?, at .*?, .*? wrote:$|^\-+Original Message\-+$|^\-{10,}+$",
+        r"^On .*?, .*? at .*?, .*? wrote:$|"
+        "^\-+Original Message\-+$|"
+        "^\-{10,}"
+        "|^From: .*?$",
         body,
         flags=re.MULTILINE,
     )[0].strip()
