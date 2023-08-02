@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- Improve quote removal. [Stavros Korokithakis]
 - Change Docker shell. [Stavros Korokithakis]
 - Remove duplicate variables from Compose file. [Stavros Korokithakis]
 - Add more variable checking. [Stavros Korokithakis]
