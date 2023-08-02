@@ -49,7 +49,7 @@ def clean_body(original_body: str) -> str:
     body = original_body.replace("\r\n", "\n").replace("\r", "\n")
     body = re.sub(r"\n\n+", r"\n\n", body)
     body = re.split(
-        r"^On .*?, .*? at .*? .*? wrote:$|"
+        r"^On .*?, .*? at .*? wrote:$|"
         "^\-+Original Message\-+$|"
         "^\-{10,}"
         "|^(\> |)From: .*?$",
