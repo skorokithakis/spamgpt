@@ -2,6 +2,7 @@
 import argparse
 import logging
 import os
+import pprint
 import re
 import sys
 from urllib.parse import urlparse
@@ -59,6 +60,7 @@ def get_next_reply(thread: Thread) -> str:
                     + message.body,
                 }
             )
+    logging.debug(f"The current chat is: {pprint.pformat(chat)}")
     for _ in range(5):
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo", messages=chat, temperature=1
@@ -73,13 +75,12 @@ def get_next_reply(thread: Thread) -> str:
     return reply.strip()
 
 
-def main(dry_run: bool, export_json: str | None) -> None:
+def main(dry_run: bool, export_json: str | None, debug: bool = False) -> None:
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG if debug else logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-
     imap_url = urlparse(os.getenv("IMAP_URL", ""))
     smtp_url = urlparse(os.getenv("SMTP_URL", ""))
 
@@ -150,6 +151,11 @@ def cli():
         metavar="FILE",
         help="Export the threads to a file",
     )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Print debug statements",
+    )
     args = parser.parse_args()
     for setting in (
         "SMTP_URL",
@@ -165,7 +171,7 @@ def cli():
                 "ERROR: Necessary configuration environment variable missing:\n\n"
                 f"\t{setting}.\n\nPlease see the README for configuring SpamGPT."
             )
-    main(dry_run=args.dry_run, export_json=args.export_json)
+    main(dry_run=args.dry_run, export_json=args.export_json, debug=args.debug)
 
 
 if __name__ == "__main__":
