@@ -7,6 +7,8 @@ Changelog
 
 Fix
 ~~~
+- Fix GPT issue where the user and assistant were swapped. [Stavros
+  Korokithakis]
 - Improve quote removal. [Stavros Korokithakis]
 - Improve quote removal. [Stavros Korokithakis]
 - Improve quote removal. [Stavros Korokithakis]

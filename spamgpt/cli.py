@@ -48,15 +48,15 @@ def get_next_reply(thread: Thread) -> str:
             chat.append(
                 {
                     "role": "assistant",
-                    "content": "Here's the next spam message. Please respond to it as before:\n\n"
-                    + message.body,
+                    "content": message.body.strip(),
                 }
             )
         else:
             chat.append(
                 {
                     "role": "user",
-                    "content": message.body,
+                    "content": "Here's the next spam message. Please respond to it as before:\n\n"
+                    + message.body,
                 }
             )
     for _ in range(5):
@@ -64,9 +64,6 @@ def get_next_reply(thread: Thread) -> str:
             model="gpt-3.5-turbo", messages=chat, temperature=1
         )
         reply = completion["choices"][0]["message"]["content"]
-        reply = reply.replace(
-            "Here's the next spam message. Please respond to it as before:", ""
-        )
         if not re.search(r"\b(spam|requested response)\b", reply.lower()):
             break
         # If a few key words appear in the message, we want to generate another reply,
