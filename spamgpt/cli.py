@@ -2,6 +2,7 @@
 import argparse
 import logging
 import os
+import re
 import sys
 from urllib.parse import urlparse
 
@@ -20,9 +21,11 @@ def get_next_reply(thread: Thread) -> str:
     chat = [
         {
             "role": "system",
-            "content": "You are a large language model who regularly gets a lot of "
-            "email spam. You want to waste spammers' time by acting genuinely "
-            "interested in their offerings, in a way that will fool them.",
+            "content": "You are "
+            + os.getenv("MY_NAME", "")
+            + ", a person who regularly gets a lot of email spam. You want to waste "
+            "spammers' time by acting genuinely interested in their offerings, in a "
+            "way that will fool them. Do not reveal your true intentions to them.",
         },
         {
             "role": "user",
@@ -44,7 +47,7 @@ def get_next_reply(thread: Thread) -> str:
         if message.is_from(MY_ADDRESSES):
             chat.append(
                 {
-                    "role": "user",
+                    "role": "assistant",
                     "content": "Here's the next spam message. Please respond to it as before:\n\n"
                     + message.body,
                 }
@@ -52,15 +55,25 @@ def get_next_reply(thread: Thread) -> str:
         else:
             chat.append(
                 {
-                    "role": "assistant",
+                    "role": "user",
                     "content": message.body,
                 }
             )
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo", messages=chat, temperature=1
-    )
-    reply = completion["choices"][0]["message"]["content"].strip()
-    return reply
+    for _ in range(5):
+        completion = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo", messages=chat, temperature=1
+        )
+        reply = completion["choices"][0]["message"]["content"]
+        reply = reply.replace(
+            "Here's the next spam message. Please respond to it as before:", ""
+        )
+        if not re.search(r"\b(spam|requested response)\b", reply.lower()):
+            break
+        # If a few key words appear in the message, we want to generate another reply,
+        # as we don't want the prompt to leak, or "spam" to be mentioned.
+        logging.info(f'The reply contained "spam", regenerating...:\n\n{reply}')
+
+    return reply.strip()
 
 
 def main(dry_run: bool, export_json: str | None) -> None:
