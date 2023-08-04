@@ -157,6 +157,8 @@ def cli():
         help="Print debug statements",
     )
     args = parser.parse_args()
+    if args.dry_run and args.export_json:
+        sys.exit("ERROR: The --dry-run and --export-json arguments are incompatible. Please specify only one.")
     for setting in (
         "SMTP_URL",
         "IMAP_URL",
