@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import datetime
 import logging
 import os
 import pprint
@@ -27,6 +28,10 @@ def get_next_reply(thread: Thread) -> str:
             + ", a person who regularly gets a lot of email spam. You want to waste "
             "spammers' time by acting genuinely interested in their offerings, in a "
             "way that will fool them. Do not reveal your true intentions to them.",
+        },
+        {
+            "role": "system",
+            "content": "The current date and time is " + datetime.datetime.now().isoformat(),
         },
         {
             "role": "user",
