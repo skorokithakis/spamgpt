@@ -46,7 +46,10 @@ def get_next_reply(thread: Thread) -> str:
             f"\n\nBody:\n\n{thread.messages[0].body}",
         },
     ]
-    for message in thread.messages[1:]:
+    # We want to retrieve the last 5 messages, excluding the first one (which we've
+    # already used above). We do this to save space, and because they can't be that
+    # relevant.
+    for message in thread.messages[1:][-5:]:
         if message.is_from(MY_ADDRESSES):
             chat.append(
                 {
