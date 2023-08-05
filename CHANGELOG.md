@@ -29,6 +29,8 @@ Fix
 
 Other
 ~~~~~
+- Feat: Tell GPT the current date and time. [Stavros Korokithakis]
+- Add --debug flag. [Stavros Korokithakis]
 - Feat: Add another quoting method. [Stavros Korokithakis]
 - Feat: Echo sleep interval in the Docker container. [Stavros
   Korokithakis]
