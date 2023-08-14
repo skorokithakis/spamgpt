@@ -5,6 +5,7 @@ import os
 import re
 import smtplib
 import time
+from email.header import decode_header
 from email.message import Message
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -77,7 +78,16 @@ def parse_email(raw_email: bytes) -> EmailMessage:
         )
         if item
     ]
-    subject = email_message["Subject"]
+    subject = (
+        "".join(
+            [
+                (text.decode(charset, errors="ignore") if charset else text)
+                for text, charset in decode_header(email_message["Subject"])
+            ]
+        )
+        .replace("\ufffd", "")
+        .strip()
+    )
     date = parsedate_to_datetime(email_message["Date"])
 
     # Get plain text body and decode

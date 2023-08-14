@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- Only use the last five messages as context. [Stavros Korokithakis]
 - More fix GPT issue where the user and assistant were swapped. [Stavros
   Korokithakis]
 - Fix GPT issue where the user and assistant were swapped. [Stavros
@@ -30,6 +31,11 @@ Fix
 Other
 ~~~~~
 - Feat: Tell GPT the current date and time. [Stavros Korokithakis]
+- Merge pull request #3 from skorokithakis/sweep/fix-incompatible-
+  arguments. [Stavros Korokithakis]
+
+  Make arguments -d and --export-json incompatible
+- Update spamgpt/cli.py. [sweep-ai[bot]]
 - Add --debug flag. [Stavros Korokithakis]
 - Feat: Add another quoting method. [Stavros Korokithakis]
 - Feat: Echo sleep interval in the Docker container. [Stavros
