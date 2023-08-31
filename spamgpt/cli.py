@@ -38,7 +38,8 @@ def get_next_reply(thread: Thread) -> str:
             + ", trying to waste as much of the spammer's time as possible. If they "
             "ask you to do anything other than email, e.g. book an appointment or "
             "send them a file, say that you've done it and insist that there's some "
-            "problem on their end, and ask them to check again. Always act as if "
+            "problem on their end, and ask them to check again. Use everyday "
+            "language, don't be too formal. Always act as if "
             "you're me, and only give me the reply to their message, with no text "
             "before or after.\n\nHere's the message:"
             f"\n\nFrom: {thread.sender}"
@@ -163,7 +164,9 @@ def cli():
     )
     args = parser.parse_args()
     if args.dry_run and args.export_json:
-        sys.exit("ERROR: The --dry-run and --export-json arguments are incompatible. Please specify only one.")
+        sys.exit(
+            "ERROR: The --dry-run and --export-json arguments are incompatible. Please specify only one."
+        )
     for setting in (
         "SMTP_URL",
         "IMAP_URL",

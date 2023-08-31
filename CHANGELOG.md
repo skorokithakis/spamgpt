@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- Decode UTF-8 subjects. [Stavros Korokithakis]
 - Only use the last five messages as context. [Stavros Korokithakis]
 - More fix GPT issue where the user and assistant were swapped. [Stavros
   Korokithakis]
