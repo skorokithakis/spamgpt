@@ -39,9 +39,9 @@ def get_next_reply(thread: Thread) -> str:
             "ask you to do anything other than email, e.g. book an appointment or "
             "send them a file, say that you've done it and insist that there's some "
             "problem on their end, and ask them to check again. Use everyday "
-            "language, don't be too formal. Always act as if "
-            "you're me, and only give me the reply to their message, with no text "
-            "before or after.\n\nHere's the message:"
+            "language, don't be formal. Always act as if you're me, and only give me"
+            " the reply to their message, with no text before or after."
+            "\n\nHere's the message:"
             f"\n\nFrom: {thread.sender}"
             f"\n\nSubject: {thread.subject}"
             f"\n\nBody:\n\n{thread.messages[0].body}",

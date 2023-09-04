@@ -31,6 +31,7 @@ Fix
 
 Other
 ~~~~~
+- Feat: Change prompt to not be too formal. [Stavros Korokithakis]
 - Feat: Tell GPT the current date and time. [Stavros Korokithakis]
 - Merge pull request #3 from skorokithakis/sweep/fix-incompatible-
   arguments. [Stavros Korokithakis]
