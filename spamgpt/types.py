@@ -1,7 +1,12 @@
 import datetime
+import os
 from email.utils import parseaddr
 
 from pydantic import BaseModel
+
+MY_ADDRESSES: set["EmailAddress"] = set(
+    address.strip() for address in os.getenv("MY_ADDRESSES", "").split(",")
+)
 
 # An email address, of the form `Name <email@address.com>`.
 EmailAddress = str
@@ -17,7 +22,8 @@ class EmailMessage(BaseModel):
     subject: str
     body: str
 
-    def is_from(self, addresses: set[str]) -> bool:
+    @property
+    def is_from_me(self) -> bool:
         """
         Check if the sender's address ends with any of my addresses.
 
@@ -25,7 +31,7 @@ class EmailMessage(BaseModel):
         as well (e.g. `@stavros.io`).
         """
         sender_email = parseaddr(self.sender)[1]
-        for address in addresses:
+        for address in MY_ADDRESSES:
             if sender_email.lower().endswith(address.lower()):
                 return True
         return False
@@ -39,16 +45,34 @@ class Thread(BaseModel):
     messages: list[EmailMessage] = []
 
     @property
+    def _first_spam_message(self) -> EmailMessage:
+        """
+        Return the first spam message.
+
+        This function returns the first message in the thread that is not ours. This is
+        necessary because in some threads, the first messasge is from us (eg when the
+        spammer's message has been deleted).
+        """
+        for message in self.messages:
+            if not message.is_from_me:
+                return message
+        else:
+            raise ValueError(
+                "There's a thread where all the messages are from us, and"
+                " it implies that my whole life has been a lie."
+            )
+
+    @property
     def subject(self) -> str:
         return self.messages[0].subject
 
     @property
     def sender(self) -> EmailAddress:
-        return self.messages[0].sender
+        return self._first_spam_message.sender
 
     @property
     def recipient(self) -> EmailAddress:
-        return self.messages[0].recipient
+        return self._first_spam_message.recipient
 
     def add_message(self, message: EmailMessage) -> None:
         self.messages.append(message)

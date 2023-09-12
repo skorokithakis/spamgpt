@@ -14,8 +14,6 @@ from .email_crap import MailHelper
 from .types import Thread
 
 
-MY_ADDRESSES = set(os.getenv("MY_ADDRESSES", "").split(","))
-
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
@@ -52,7 +50,7 @@ def get_next_reply(thread: Thread) -> str:
     # already used above). We do this to save space, and because they can't be that
     # relevant.
     for message in thread.messages[1:][-5:]:
-        if message.is_from(MY_ADDRESSES):
+        if message.is_from_me:
             chat.append(
                 {
                     "role": "assistant",
@@ -111,15 +109,13 @@ def main(dry_run: bool, export_json: str | None, debug: bool = False) -> None:
         with open(export_json, "w") as f:
             for thread in threads:
                 for message in thread.messages:
-                    message.sender = (
-                        "ChatGPT" if message.is_from(MY_ADDRESSES) else "Spammer"
-                    )
+                    message.sender = "ChatGPT" if message.is_from_me else "Spammer"
                 f.write(thread.model_dump_json() + "\n")
         logging.info("Done.")
         return
 
     for thread in threads:
-        if thread.messages[-1].is_from(MY_ADDRESSES):
+        if thread.messages[-1].is_from_me:
             logging.info(
                 f'We\'ve already replied to "{thread.messages[0].subject}", skipping...'
             )
