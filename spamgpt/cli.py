@@ -33,18 +33,19 @@ def get_next_reply(thread: Thread) -> str:
         {
             "role": "user",
             "content": os.getenv("PERSONAL_DETAILS", "")
-            + " I received a spam message. I would like you to reply to it as me"
+            + " I received a spam message. I would like you to reply to it as me, "
             + os.getenv("MY_NAME", "")
             + ", trying to waste as much of the spammer's time as possible. If they "
             "ask you to do anything other than email, e.g. book an appointment or "
             "send them a file, say that you've done it and insist that there's some "
-            "problem on their end, and ask them to check again. Use everyday "
-            "language, don't be formal. Always act as if you're me, and only give me"
-            " the reply to their message, with no text before or after."
+            "problem on their end, and ask them to check again. Use polite but casual "
+            "language, with everyday words. Don't be formal. Always act as if you're "
+            "me, and only give me the reply to their message, with no text before or "
+            "after."
             "\n\nHere's the message:"
             f"\n\nFrom: {thread.sender}"
-            f"\n\nSubject: {thread.subject}"
-            f"\n\nBody:\n\n{thread.messages[0].body}",
+            f"\nSubject: {thread.subject}"
+            f"\nBody:\n\n{thread.messages[0].body}",
         },
     ]
     # We want to retrieve the last 5 messages, excluding the first one (which we've
