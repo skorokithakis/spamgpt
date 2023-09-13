@@ -34,6 +34,7 @@ Fix
 
 Other
 ~~~~~
+- Feat: Add caching of the messages. [Stavros Korokithakis]
 - Chore: Reformat prompt. [Stavros Korokithakis]
 - Feat: Change prompt to not be too formal. [Stavros Korokithakis]
 - Feat: Tell GPT the current date and time. [Stavros Korokithakis]

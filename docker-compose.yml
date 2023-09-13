@@ -16,3 +16,4 @@ services:
       - PERSONAL_DETAILS
     volumes:
       - ${HM_REPO_DIR}:/code
+      - ${HM_CACHE_DIR}:/cache
