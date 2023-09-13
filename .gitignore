@@ -148,3 +148,4 @@ dmypy.json
 *.sqlite3
 .envrc
 *.json
+*.pkl

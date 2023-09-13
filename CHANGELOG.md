@@ -7,6 +7,8 @@ Changelog
 
 Fix
 ~~~
+- Fix bug where we got the wrong recipient if the first message in the
+  thread was from us. [Stavros Korokithakis]
 - Improve prompt a bit. [Stavros Korokithakis]
 - Decode UTF-8 subjects. [Stavros Korokithakis]
 - Only use the last five messages as context. [Stavros Korokithakis]

@@ -1,4 +1,4 @@
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-0 * * * * ash -c 'export SLEEP_TIME=$((RANDOM*3600/32768)); echo "Sleeping for $SLEEP_TIME seconds..."; sleep $SLEEP_TIME && spamgpt'
+0 * * * * ash -c 'export SLEEP_TIME=$((RANDOM*3600/32768)); echo "Sleeping for $SLEEP_TIME seconds..."; sleep $SLEEP_TIME; cd /cache; spamgpt'

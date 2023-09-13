@@ -19,4 +19,6 @@ COPY ./ /code/
 # Install the project.
 RUN poetry install
 
+RUN mkdir /cache
+
 CMD crond -f -l 1

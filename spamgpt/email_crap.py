@@ -1,7 +1,9 @@
 import datetime
 import email
 import imaplib
+import logging
 import os
+import pickle
 import re
 import smtplib
 import time
@@ -13,10 +15,18 @@ from email.utils import parsedate_to_datetime
 
 import bleach
 import shortuuid
+from tqdm import tqdm
 
 from .types import EmailAddress
 from .types import EmailMessage
 from .types import Thread
+
+try:
+    with open(".cache.pkl", "rb") as infile:
+        MESSAGE_CACHE = pickle.load(infile)
+except Exception:
+    MESSAGE_CACHE = {}
+    logging.warning("Could not load cache, continuing cache-poor.")
 
 
 def parse_payload(msg):
@@ -132,9 +142,14 @@ class MailHelper:
         self.smtp.login(smtp_username, smtp_password)
 
     def get_message(self, uid: str) -> EmailMessage:
-        # Fetch the email (headers and full body).
-        result, data = self.imap.uid("fetch", uid, "(BODY[])")
-
+        global MESSAGE_CACHE
+        cached_message = MESSAGE_CACHE.get(uid)
+        if cached_message:
+            data = cached_message
+        else:
+            # Fetch the email (headers and full body).
+            _, data = self.imap.uid("fetch", uid, "(BODY[])")
+            MESSAGE_CACHE[uid] = data
         return parse_email(data[0][1])
 
     def get_message_by_id(self, message_id: str) -> EmailMessage:
@@ -163,7 +178,10 @@ class MailHelper:
         _, data = self.imap.uid("search", None, "ALL")  # type: ignore
 
         threads: dict[str, Thread] = {}
-        messages = [self.get_message(num) for num in data[0].split()]
+        messages = [self.get_message(num) for num in tqdm(data[0].split())]
+        with open(".cache.pkl", "wb") as outfile:
+            logging.info("Wrote cache.")
+            pickle.dump(MESSAGE_CACHE, outfile)
 
         # Here, we construct a dictionary of message IDs and their corresponding
         # threads. We do this to be able to easily look up which message a
