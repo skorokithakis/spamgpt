@@ -68,7 +68,7 @@ def get_next_reply(thread: Thread) -> str:
     logging.debug(f"The current chat is: {pprint.pformat(chat)}")
     for _ in range(5):
         completion = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=chat, temperature=1
+            model="gpt-4o-mini", messages=chat, temperature=1
         )
         reply = completion["choices"][0]["message"]["content"]
         if not re.search(r"\b(spam|requested response)\b", reply.lower()):

@@ -7,6 +7,7 @@ Changelog
 
 Fix
 ~~~
+- Don't forget the Compose file cache dir. [Stavros Korokithakis]
 - Fix bug where we got the wrong recipient if the first message in the
   thread was from us. [Stavros Korokithakis]
 - Improve prompt a bit. [Stavros Korokithakis]
